@@ -20,6 +20,9 @@
     <!-- Resources -->
     <link type="text/json"
         href="{{ url_for('static', filename='json/world-countries.json') }}">
+    <link type="text/css" 
+        href="https://fonts.googleapis.com/css?family=Lato:300,400,700" 
+        rel="stylesheet">
     <style type="text/css">
 
 html {
@@ -30,13 +33,13 @@ html {
 #body {
     position: relative;
     width: 1920px;
-    height: 1000px;
+    height: 1200px;
 }
 
 #waterContainer,
 #earthContainer {
     width: 1920px;
-    height: 1000px;
+    height: 1200px;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -44,7 +47,7 @@ html {
 
 svg {
   width: 1920px;
-  height: 1000px;
+  height: 1200px;
   pointer-events: all;
 }
 
@@ -54,13 +57,9 @@ circle {
 
 path {
   fill: #CCEABE;
-<<<<<<< HEAD
-  stroke: #fff;
   cursor: pointer;
-=======
   stroke: #797542;
-  stroke-width: 0.1em;
->>>>>>> 1314161f71ac32a9f434e9ad7c88caa44bf00733
+  stroke-width: 1px;
 }
 path:hover {
   fill: #acd09c;
@@ -76,7 +75,9 @@ path:hover {
     <div id="body">
       <div id="waterContainer"></div>
       <div id="footer">
-        <div class="hint">DRAG TO ROTATE</div>
+        <div id="hint">
+          <h1>DRAG TO ROTATE</h1>
+        </div>
       </div>
     </div>
     <script type="text/javascript">
@@ -92,7 +93,7 @@ var projection = d3.geo.azimuthal()
 var circle = d3.geo.greatCircle()
     .origin(projection.origin());
 
-var draw = SVG('waterContainer').size(1920, 1000);
+var draw = SVG('waterContainer').size(1920, 1200);
 
 draw.circle(760)
     .attr("cx", 960)
