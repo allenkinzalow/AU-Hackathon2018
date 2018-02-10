@@ -2,18 +2,30 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+    <!-- Javascript -->
     <script type="text/javascript" 
         src="{{ url_for('static', filename='js/d3/d3.js') }}"></script>
     <script type="text/javascript" 
         src="{{ url_for('static', filename='js/d3/d3.geo.js') }}"></script>
     <script type="text/javascript"
         src="{{ url_for('static', filename='js/svg.js') }}"></script>
+
+    <!-- CSS -->
     <link type="text/css" rel="stylesheet" 
         href="{{ url_for('static', filename='css/style.css') }}">
+      <link type="text/css" rel="stylesheet" 
+        href="{{ url_for('static', filename='css/stars.css') }}">
+
+    <!-- Resources -->
     <link type="text/json"
         href="{{ url_for('static', filename='json/world-countries.json') }}">
-    <!-- <link type="text/css" rel="stylesheet" href="colorbrewer/colorbrewer.css"/> -->
     <style type="text/css">
+
+html {
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  overflow: hidden;
+}
 
 #body {
     position: relative;
@@ -43,6 +55,7 @@ circle {
 path {
   fill: #CCEABE;
   stroke: #fff;
+  cursor: pointer;
 }
 path:hover {
   fill: #acd09c;
@@ -52,6 +65,9 @@ path:hover {
     </style>
   </head>
   <body>
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
     <div id="body">
       <div id="waterContainer"></div>
       <div id="footer">
