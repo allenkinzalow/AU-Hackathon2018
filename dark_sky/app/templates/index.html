@@ -6,6 +6,8 @@
     <!-- Javascript -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" 
+        src="{{ url_for('static', filename='js/jquery.mousewheel.min.js') }}"></script>
+    <script type="text/javascript" 
         src="{{ url_for('static', filename='js/d3/d3.js') }}"></script>
     <script type="text/javascript" 
         src="{{ url_for('static', filename='js/d3/d3.geo.js') }}"></script>
@@ -35,6 +37,10 @@ html {
   height: 100%;
   background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
   overflow: hidden;
+}
+
+body {
+  height: 100%;
 }
 
 #body {
@@ -181,6 +187,16 @@ d3.select(window)
 d3.select("select").on("change", function() {
   projection.mode(this.value).scale(scale[this.value]);
   refresh(750);
+});
+
+var bodyContainer = $('#body');
+var transform = 1;
+bodyContainer.mousewheel(function(event) {
+    if(event.deltaY != 0) {
+      transform += (transform * 0.1) * event.deltaY;
+      transform = transform < 0.8 ? 0.8 : transform > 2 ? 2 : transform;
+      bodyContainer.css({transform: "scale(" + transform + ")"});
+    }
 });
 
 var m0,
