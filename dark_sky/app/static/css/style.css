@@ -1,5 +1,4 @@
 body {
-  background: #272b34;
   overflow: hidden;
   margin: 0;
   font-size: 14px;
@@ -16,12 +15,10 @@ body {
   display: block;
   font-size: 36px;
   font-weight: 300;
-  text-shadow: 0 1px 0 #fff;
 }
 
 #header.inverted, #footer.inverted {
   color: #fff;
-  text-shadow: 0 1px 4px #000;
 }
 
 #header {
@@ -80,10 +77,15 @@ a:hover {
   color: #666;
 }
 
-.hint {
-  margin-top: 5em;
+h1 {
+  font-family: "lato", sans-serif;
+  font-weight: 300;
+  font-size: 50px;
+  letter-spacing: 10px;
+  margin-top: 4em;
   text-align: right;
-  font-weight: 600;
-  font-size: 40px;
-  color: #fff;
+  color: white;
+  /* background: -webkit-linear-gradient(white, #38495a, white) !important;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent !important; */
 }
