@@ -17,32 +17,33 @@
 
 #body {
     position: relative;
-    width: 900px;
-    height: 900px;
+    width: 1920px;
+    height: 1000px;
 }
 
 #waterContainer,
 #earthContainer {
-    width: 900px;
-    height: 900px;
+    width: 1920px;
+    height: 1000px;
     position: absolute;
     top: 0px;
     left: 0px;
 }
 
 svg {
-  width: 900px;
-  height: 900px;
+  width: 1920px;
+  height: 1000px;
   pointer-events: all;
 }
 
 circle {
-  fill: #9ed5ff;
+  fill: #85caff;
 }
 
 path {
   fill: #CCEABE;
-  stroke: #fff;
+  stroke: #797542;
+  stroke-width: 0.1em;
 }
 path:hover {
   fill: #acd09c;
@@ -64,18 +65,18 @@ var feature;
 
 var projection = d3.geo.azimuthal()
     .scale(380)
-    .origin([-90.03,42.37]) // -71.03,42.37
+    .origin([-90,45]) // -71.03,42.37
     .mode("orthographic")
-    .translate([500, 440]);
+    .translate([960, 560]);
 
 var circle = d3.geo.greatCircle()
     .origin(projection.origin());
 
-var draw = SVG('waterContainer').size(1200, 800);
+var draw = SVG('waterContainer').size(1920, 1000);
 
 draw.circle(760)
-    .attr("cx", 500)
-    .attr("cy", 440);
+    .attr("cx", 960)
+    .attr("cy", 560);
 
 // TODO fix d3.geo.azimuthal to be consistent with scale
 var scale = {
