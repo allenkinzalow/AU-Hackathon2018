@@ -3,6 +3,7 @@ body {
   margin: 0;
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica;
+  color: #fff;
 }
 
 #chart, #header, #footer {
@@ -84,8 +85,7 @@ h1 {
   letter-spacing: 10px;
   margin-top: 4em;
   text-align: right;
-  color: white;
-  /* background: -webkit-linear-gradient(white, #38495a, white) !important;
+  background: linear-gradient(white, #38495a);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent !important; */
+  -webkit-text-fill-color: transparent;
 }
