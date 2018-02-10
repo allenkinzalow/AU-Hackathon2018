@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" 
+        src="{{ url_for('static', filename='js/d3/d3.js') }}"></script>
+    <script type="text/javascript" 
+        src="{{ url_for('static', filename='js/d3/d3.geo.js') }}"></script>
+    <script type="text/javascript"
+        src="{{ url_for('static', filename='js/svg.js') }}"></script>
+    <link type="text/css" rel="stylesheet" 
+        href="{{ url_for('static', filename='css/style.css') }}">
+    <link type="text/json"
+        href="{{ url_for('static', filename='json/world-countries.json') }}">
+    <!-- <link type="text/css" rel="stylesheet" href="colorbrewer/colorbrewer.css"/> -->
+    <style type="text/css">
+
+#body {
+    position: relative;
+    width: 900px;
+    height: 900px;
+}
+
+#waterContainer,
+#earthContainer {
+    width: 900px;
+    height: 900px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+svg {
+  width: 900px;
+  height: 900px;
+  pointer-events: all;
+}
+
+circle {
+  fill: #9ed5ff;
+}
+
+path {
+  fill: #CCEABE;
+  stroke: #fff;
+}
+path:hover {
+  fill: #acd09c;
+  transition: fill 0.3s;
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="body">
+      <div id="waterContainer"></div>
+      <div id="footer">
+        <div class="hint">DRAG TO ROTATE</div>
+      </div>
+    </div>
+    <script type="text/javascript">
+
+var feature;
+
+var projection = d3.geo.azimuthal()
+    .scale(380)
+    .origin([-90.03,42.37]) // -71.03,42.37
+    .mode("orthographic")
+    .translate([500, 440]);
+
+var circle = d3.geo.greatCircle()
+    .origin(projection.origin());
+
+var draw = SVG('waterContainer').size(1200, 800);
+
+draw.circle(760)
+    .attr("cx", 500)
+    .attr("cy", 440);
+
+// TODO fix d3.geo.azimuthal to be consistent with scale
+var scale = {
+  orthographic: 380,
+  stereographic: 380,
+  gnomonic: 380,
+  equidistant: 380 / Math.PI * 2,
+  equalarea: 380 / Math.SQRT2
+};
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var svg = d3.select("#body").append("svg:svg")
+    .attr("id", "earthContainer")
+    .attr("width", 1280)
+    .attr("height", 800)
+    .on("mousedown", mousedown);
+
+d3.json("static/json/world-countries.json", function(collection) {
+  feature = svg.selectAll("path")
+      .data(collection.features)
+    .enter().append("svg:path")
+      .attr("d", clip);
+
+  feature.append("svg:title")
+      .text(function(d) { return d.properties.name; });
+});
+
+d3.select(window)
+    .on("mousemove", mousemove)
+    .on("mouseup", mouseup);
+
+d3.select("select").on("change", function() {
+  projection.mode(this.value).scale(scale[this.value]);
+  refresh(750);
+});
+
+var m0,
+    o0;
+
+function mousedown() {
+  m0 = [d3.event.pageX, d3.event.pageY];
+  o0 = projection.origin();
+  d3.event.preventDefault();
+}
+
+function mousemove() {
+  if (m0) {
+    var m1 = [d3.event.pageX, d3.event.pageY],
+        o1 = [o0[0] + (m0[0] - m1[0]) / 8, o0[1] + (m1[1] - m0[1]) / 8];
+    projection.origin(o1);
+    circle.origin(o1)
+    refresh();
+  }
+}
+
+function mouseup() {
+  if (m0) {
+    mousemove();
+    m0 = null;
+  }
+}
+
+function refresh(duration) {
+  (duration ? feature.transition().duration(duration) : feature).attr("d", clip);
+}
+
+function clip(d) {
+  return path(circle.clip(d));
+}
+
+    </script>
+  </body>
+</html>
