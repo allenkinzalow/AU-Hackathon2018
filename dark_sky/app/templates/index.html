@@ -193,7 +193,7 @@ var bodyContainer = $('#body');
 var transform = 1;
 bodyContainer.mousewheel(function(event) {
     if(event.deltaY != 0) {
-      transform += (transform * 0.1) * event.deltaY;
+      transform += (transform * 0.05) * event.deltaY / Math.abs(event.deltaY);
       transform = transform < 0.8 ? 0.8 : transform > 2 ? 2 : transform;
       bodyContainer.css({transform: "scale(" + transform + ")"});
     }
