@@ -1,0 +1,78 @@
+html, body {
+    height: 100%;
+    background-color: #fcfcfc;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.dashboard-tabs {
+    min-width: 1200px;
+    webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+}
+
+.tab-content {
+    padding: 15px !important;
+}
+
+.dashboard-row {
+    max-width: 1200px;
+}
+
+#current_city {
+    width: 100%;
+    text-align: center;
+    font-size: 42px;
+    color: rgba(0, 0, 0, 0.87);
+    text-transform: uppercase;
+}
+
+.forecast-table {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.forecast-column {
+    display: flex;
+    flex-direction: column;
+    margin: 0 15px;
+}
+
+.forecast-title {
+    text-transform: uppercase;
+    border-bottom: 1px solid gray;
+    font-size: 25px;
+    color: #414042;
+    text-align: center;
+    min-width: 90px;
+}
+
+.forecast-value {
+    font-size: 32px;
+    color: #000;
+    text-align: center;
+}
+
+.current-forecast {
+    background: no-repeat center center;
+    width: 128px;
+    height: 72px;
+    background-size: 143px;
+}
+.current-forecast.clear-day { background-image: url('/static/img/sun.svg'); }
+.current-forecast.clear-night { background-image: url('/static/img/night.svg'); background-size: 200px; }
+.current-forecast.partly-cloudy-day { background-image: url('/static/img/cloud-day.svg'); background-position-y: -23px; }
+.current-forecast.partly-cloudy-night { background-image: url('/static/img/cloud-night.svg'); background-position-y: -23px; }
+.current-forecast.cloudy { background-image: url('/static/img/cloud.svg'); }
+.current-forecast.rain { background-image: url('/static/img/rain.svg'); background-position-y: -40px; }
+.current-forecast.sleet { background-image: url('/static/img/sleet.svg'); }
+.current-forecast.snow { background-image: url('/static/img/snow.svg'); }
+.current-forecast.wind { background-image: url('/static/img/wind.svg'); }
+.current-forecast.fog { background-image: url('/static/img/fog.svg'); }
