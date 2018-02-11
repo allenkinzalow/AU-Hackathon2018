@@ -176,7 +176,7 @@ var Dashboard = {
                         Dashboard.UI.flashback.setupGraphs("week", address);
                     });
                 },
-                setupGraphs: function(type, address) {
+                setupGraphs: function(type, address, yearsAgo) {
                     var date = undefined;
                     switch(type) {
                         case "week":
@@ -192,6 +192,8 @@ var Dashboard = {
                             date.setFullYear(date.getFullYear() - 1);
                             break;
                         case "custom":
+                            date = new Date();
+                            date.setFullYear(date.getFullYear() - 10)
                             break;
                     };
                     date = (date.valueOf() / 1000).toFixed(0);
@@ -234,9 +236,9 @@ var Dashboard = {
                                         display: true,
                                         ticks: {
                                             beginAtZero: true,
-                                            steps: 9,
+                                            steps: 4,
                                             stepValue: 6,
-                                            max: 48,
+                                            max: 24,
                                             callback: function(dataLabel, index) {
                                                 return index % 6 === 0 ? dataLabel : '';
                                             }
@@ -251,7 +253,7 @@ var Dashboard = {
                                             beginAtZero: true,
                                             steps: 11,
                                             stepValue: 10,
-                                            max: 130,
+                                            max: 110,
                                             callback: function(dataLabel, index) {
                                                 return index % 110 === 0 ? '' : dataLabel;
                                             }
@@ -294,9 +296,9 @@ var Dashboard = {
                                         display: true,
                                         ticks: {
                                             beginAtZero: true,
-                                            steps: 9,
+                                            steps: 4,
                                             stepValue: 6,
-                                            max: 48,
+                                            max: 24,
                                             callback: function(dataLabel, index) {
                                                 return index % 6 === 0 ? dataLabel : '';
                                             }
@@ -308,8 +310,12 @@ var Dashboard = {
                                     yAxes: [{
                                         display: true,
                                         ticks: {
+                                            beginAtZero: true,
+                                            steps: 11,
+                                            stepValue: 10,
+                                            max: 110,
                                             callback: function(dataLabel, index) {
-                                                return index % 5 === 0 ? '' : dataLabel;
+                                                return index % 110 === 0 ? '' : dataLabel;
                                             }
                                         }
                                     }]
@@ -327,7 +333,7 @@ var Dashboard = {
                             humidityData.push(hour.humidity * 100);
                         });
                         var precipLabels = [];
-                        for(var i = 0; i <= 23; i++)
+                        for(var i = 0; i <= 24; i++)
                         precipLabels.push(i + "");
                         var myLineChart = new Chart($('#flashback_prec_humid_graph'), {
                             type: 'line',
@@ -361,9 +367,9 @@ var Dashboard = {
                                         display: true,
                                         ticks: {
                                             beginAtZero: true,
-                                            steps: 9,
+                                            steps: 4,
                                             stepValue: 6,
-                                            max: 48,
+                                            max: 24,
                                             callback: function(dataLabel, index) {
                                                 return index % 6 === 0 ? dataLabel : '';
                                             }

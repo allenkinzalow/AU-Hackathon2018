@@ -29,6 +29,7 @@ html, body {
 
 canvas {
     min-height: 500px !important;
+    max-height: 500px !important;
 }
 
 #current_city,
