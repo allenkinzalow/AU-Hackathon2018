@@ -13,6 +13,7 @@ var Dashboard = {
             Dashboard.UI.tabs.setup();
             Dashboard.UI.current.setup();
             Dashboard.UI.hourly.setup();
+            Dashboard.UI.flashback.setup();
         }, true);
     },
     
@@ -94,22 +95,6 @@ var Dashboard = {
             },
             hourly: {
                 setup: function() {
-<<<<<<< HEAD
-                    
-                }
-            },
-            flashback: {
-                setup: function() {
-                    var temperatureData = [];
-                        data.hourly.data.forEach(function(hour) { temperatureData.push(hour.temperature);});
-                        var tempLabels = [];
-                        for(var i = 0; i <= 23; i++)
-                        tempLabels.push(i + "");
-                        var myLineChart = new Chart($('#flashback_temperature_graph'), {
-                            type: 'line',
-                            data: {
-                                labels: tempLabels,
-=======
                     Dashboard.Util.getCoordinateAddress(Dashboard.latitude, Dashboard.longitude, function(address) {
                         $("#hourly_city").html(address);
                         var data = Dashboard.DarkSky.date_map[Dashboard.selectedDate];
@@ -128,7 +113,6 @@ var Dashboard = {
                             type: 'line',
                             data: {
                                 labels: precipLabels,
->>>>>>> 7d4380019d32c0d3a6a0eabf79ad7803cd9a3efa
                                 datasets: [{
                                     label: "Precipitation",
                                     data: precipitationData,
@@ -143,27 +127,18 @@ var Dashboard = {
                                 scaleShowVerticalLines: false,
                                 title: {
                                     display: true,
-<<<<<<< HEAD
-                                    text: "Temperature by Hour"
-=======
                                     text: "Hour by Hour Precipitation"
->>>>>>> 7d4380019d32c0d3a6a0eabf79ad7803cd9a3efa
                                 },
                                 scales: {
                                     xAxes: [{
                                         display: true,
                                         ticks: {
-<<<<<<< HEAD
-                                            callback: function(dataLabel, index) {
-                                                return index % 5 === 0 ? dataLabel : '';
-=======
                                             beginAtZero: true,
                                             steps: 9,
                                             stepValue: 6,
                                             max: 48,
                                             callback: function(dataLabel, index) {
                                                 return index % 6 === 0 ? dataLabel : '';
->>>>>>> 7d4380019d32c0d3a6a0eabf79ad7803cd9a3efa
                                             }
                                         },
                                         gridLines : {
@@ -172,8 +147,6 @@ var Dashboard = {
                                     }],
                                     yAxes: [{
                                         display: true,
-<<<<<<< HEAD
-=======
                                         ticks: {
                                             beginAtZero: true,
                                             steps: 11,
@@ -183,19 +156,241 @@ var Dashboard = {
                                                 return index % 110 === 0 ? '' : dataLabel;
                                             }
                                         }
->>>>>>> 7d4380019d32c0d3a6a0eabf79ad7803cd9a3efa
                                     }]
                                 }
                             }
                         });
-<<<<<<< HEAD
-                }
-            }
-=======
                     });
                 }
             },
->>>>>>> 7d4380019d32c0d3a6a0eabf79ad7803cd9a3efa
+            flashback: {
+                setup: function() {
+                    Dashboard.Util.getCoordinateAddress(Dashboard.latitude, Dashboard.longitude, function(address) {
+                        $('.tabs.flashback-tabs').tabs({
+                            onShow: function(tab) {
+                                var active = $('.tabs.flashback-tabs .active').parent();
+                                console.log(active.data("interval"));
+                                Dashboard.UI.flashback.setupGraphs(active.data("interval"), address);
+                            } 
+                        });
+                        Dashboard.UI.flashback.setupGraphs("week", address);
+                    });
+                },
+                setupGraphs: function(type, address) {
+                    var date = undefined;
+                    switch(type) {
+                        case "week":
+                            date = new Date();
+                            date.setDate(date.getDate() - 7);
+                            break;
+                        case "month":
+                            date = new Date();
+                            date.setMonth(date.getMonth() - 1);
+                            break; 
+                        case "year":
+                            date = new Date();
+                            date.setFullYear(date.getFullYear() - 1);
+                            break;
+                        case "custom":
+                            break;
+                    };
+                    date = (date.valueOf() / 1000).toFixed(0);
+                    Dashboard.DarkSky.retrieve(date, function() {
+                        var data = Dashboard.DarkSky.date_map[date];
+
+                        $('#flashback_city').html(address);
+                        $('#flashback_date').html(Dashboard.Util.getFormattedYear(new Date(date * 1000)));
+
+                        /** 
+                         * Temperature Graph
+                         */
+                        var temperatureData = [];
+                        data.hourly.data.forEach(function(hour) { temperatureData.push(hour.temperature);});
+                        var temperatureLabels = [];
+                        for(var i = 1; i <= 24; i++)
+                            temperatureLabels.push(i + "");
+                        var myLineChart = new Chart($('#flashback_temperature_graph'), {
+                            type: 'line',
+                            data: {
+                                labels: temperatureLabels,
+                                datasets: [{
+                                    label: "Temperature",
+                                    data: temperatureData,
+                                    backgroundColor: "rgb(255, 99, 132)",
+                                    borderColor: "rgb(255, 99, 132)",
+                                    fill: false,
+                                }],
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scaleShowVerticalLines: false,
+                                title: {
+                                    display: true,
+                                    text: "Hourly Historical Temperature"
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        display: true,
+                                        ticks: {
+                                            beginAtZero: true,
+                                            steps: 9,
+                                            stepValue: 6,
+                                            max: 48,
+                                            callback: function(dataLabel, index) {
+                                                return index % 6 === 0 ? dataLabel : '';
+                                            }
+                                        },
+                                        gridLines : {
+                                            display : false
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        display: true,
+                                        ticks: {
+                                            beginAtZero: true,
+                                            steps: 11,
+                                            stepValue: 10,
+                                            max: 130,
+                                            callback: function(dataLabel, index) {
+                                                return index % 110 === 0 ? '' : dataLabel;
+                                            }
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+
+                        /** 
+                         * Wind Graph
+                         */
+                        var windData = [];
+                        data.hourly.data.forEach(function(hour) { windData.push(hour.windSpeed);});
+                        var windLabels = [];
+                        for(var i = 1; i <= 24; i++)
+                        windLabels.push(i + "");
+                        var myLineChart = new Chart($('#flashback_wind_graph'), {
+                            type: 'line',
+                            data: {
+                                labels: windLabels,
+                                datasets: [{
+                                    label: "Wind Speed",
+                                    data: windData,
+                                    backgroundColor: "rgb(75, 192, 192)",
+                                    borderColor: "rgb(75, 192, 192)",
+                                    fill: false,
+                                }],
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scaleShowVerticalLines: false,
+                                title: {
+                                    display: true,
+                                    text: "Hourly Historical Wind Speed"
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        display: true,
+                                        ticks: {
+                                            beginAtZero: true,
+                                            steps: 9,
+                                            stepValue: 6,
+                                            max: 48,
+                                            callback: function(dataLabel, index) {
+                                                return index % 6 === 0 ? dataLabel : '';
+                                            }
+                                        },
+                                        gridLines : {
+                                            display : false
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        display: true,
+                                        ticks: {
+                                            callback: function(dataLabel, index) {
+                                                return index % 5 === 0 ? '' : dataLabel;
+                                            }
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+
+                        /** 
+                         * Humid/Precipitation Graph
+                         */
+                        var precipitationData = [];
+                        var humidityData = [];
+                        data.hourly.data.forEach(function(hour) { 
+                            precipitationData.push(hour.precipProbability * 100);
+                            humidityData.push(hour.humidity * 100);
+                        });
+                        var precipLabels = [];
+                        for(var i = 0; i <= 23; i++)
+                        precipLabels.push(i + "");
+                        var myLineChart = new Chart($('#flashback_prec_humid_graph'), {
+                            type: 'line',
+                            data: {
+                                labels: precipLabels,
+                                datasets: [{
+                                    label: "Precipitation",
+                                    data: precipitationData,
+                                    backgroundColor: "rgb(255, 99, 132)",
+                                    borderColor: "rgb(255, 99, 132)",
+                                    fill: false,
+                                },
+                                {
+                                    label: "Humidity",
+                                    data: humidityData,
+                                    backgroundColor: "rgb(54, 162, 235)",
+                                    borderColor: "rgb(54, 162, 235)",
+                                    fill: false,
+                                },],
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scaleShowVerticalLines: false,
+                                title: {
+                                    display: true,
+                                    text: "Hourly Historical Wind Speed"
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        display: true,
+                                        ticks: {
+                                            beginAtZero: true,
+                                            steps: 9,
+                                            stepValue: 6,
+                                            max: 48,
+                                            callback: function(dataLabel, index) {
+                                                return index % 6 === 0 ? dataLabel : '';
+                                            }
+                                        },
+                                        gridLines : {
+                                            display : false
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        display: true,
+                                        ticks: {
+                                            beginAtZero: true,
+                                            steps: 11,
+                                            stepValue: 10,
+                                            max: 110,
+                                            callback: function(dataLabel, index) {
+                                                return index % 110 === 0 ? '' : dataLabel;
+                                            }
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+
+                    });
+                },
+            },
     },
     DarkSky: {
         date_map: {},
@@ -238,6 +433,9 @@ var Dashboard = {
                 callback(address);
             });
 
+        },
+        getFormattedYear: function(date) {
+            return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
         },
     },
 };
