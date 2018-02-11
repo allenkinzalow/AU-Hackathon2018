@@ -16,6 +16,8 @@
     <script type="text/javascript"
         src="{{ url_for('static', filename='js/materialize.js') }}"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM&libraries=places"></script>
+    <script type="text/javascript"
+    src="https://unpkg.com/tippy.js@2.1.1/dist/tippy.all.min.js"></script>
 
     <!-- CSS -->
     <link type="text/css" rel="stylesheet" 
@@ -113,14 +115,19 @@ var svg = d3.select("#body").append("svg:svg")
 d3.json("static/json/world-countries.json", function(collection) {
   feature = svg.selectAll("path")
       .data(collection.features)
-    .enter().append("svg:path")
-      .attr("d", clip);
+      .enter().append("svg:path")
+      .attr("d", clip)
+      .attr("title", function(d) { return d.properties.name; });
+  tippy('path', {
+      followCursor: true,
+      arrow: true,
+  })
 
-  feature.append("svg:title")
-      .text(function(d) { return d.properties.name; });
+  //feature.append("svg:title")
+  //    .text(function(d) { return d.properties.name; });
 
   $('#earthContainer path').click(function() {
-    var country = $(this).find('title').html();
+    var country = $(this).attr("data-original-title");
     console.log(country);
     $.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + country + "&key=AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM", function(data) {
       if(data.results.length > 0)
