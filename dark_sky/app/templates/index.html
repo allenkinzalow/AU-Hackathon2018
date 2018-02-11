@@ -119,6 +119,9 @@ path:hover {
   align-items: center;
   margin-top: 25px;
 }
+#earthShadow {
+    z-index: 5000;
+}
 
     </style>
   </head>
@@ -139,6 +142,24 @@ path:hover {
             </div>
           </div>
     </div>
+    <svg xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+      baseProfile="full"
+      width: "820"
+      height: "820">
+      <linearGradient id="earthGrad">
+        <stop stop-color="#fff" stop-opacity="0.5" offset="0%"/>
+        <stop stop-color="#fff" stop-opacity="0" offset="20%"/>
+        <stop stop-color="#000" stop-opacity="0" offset="80%"/>
+        <stop stop-color="#000" stop-opacity="0.5" offset="100%"/>
+      </linearGradient>
+      <circle id="earthShadow" 
+              cx="410" 
+              cy="410" 
+              r="380" 
+              fill="url(#earthGrad)">
+      </circle>
+    </svg>
     <script type="text/javascript">
 
 var feature;
@@ -154,6 +175,7 @@ var projection = d3.geo.azimuthal()
 var circle = d3.geo.greatCircle()
     .origin(projection.origin());
 
+// Draw water container.
 var draw = SVG('waterContainer').size(820, 820);
 
 draw.circle(760)
