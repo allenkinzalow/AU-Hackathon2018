@@ -1,3 +1,5 @@
+const KEY = 'e7a80ef23407023eacc675060733f2c4';
+
 var Dashboard = {
     latitude: undefined,
     longitude: undefined,
@@ -10,7 +12,8 @@ var Dashboard = {
         this.DarkSky.retrieve(this.selectedDate, function() {
             Dashboard.UI.tabs.setup();
             Dashboard.UI.current.setup();
-        });
+            Dashboard.UI.hourly.setup();
+        }, true);
     },
     
     UI: {
@@ -30,8 +33,8 @@ var Dashboard = {
                         var data = Dashboard.DarkSky.date_map[Dashboard.selectedDate];
                         $('#current_temperature').html(data.currently.temperature.toFixed(0) + "°");
                         $('#current_wind').html(data.currently.windSpeed + " mph");
-                        $('#current_precipitation').html(data.currently.precipProbability * 100 + "%");
-                        $('#current_humidity').html(data.currently.humidity * 100 + "%");
+                        $('#current_precipitation').html((data.currently.precipProbability * 100).toFixed(0) + "%");
+                        $('#current_humidity').html((data.currently.humidity * 100).toFixed(0) + "%");
                         $('.current-forecast').addClass(data.currently.icon);
 
                         var precipitationData = [];
@@ -57,7 +60,7 @@ var Dashboard = {
                                 scaleShowVerticalLines: false,
                                 title: {
                                     display: true,
-                                    text: "Precipitation by Minute"
+                                    text: "Minute by Minute Precipitation"
                                 },
                                 scales: {
                                     xAxes: [{
@@ -91,6 +94,7 @@ var Dashboard = {
             },
             hourly: {
                 setup: function() {
+<<<<<<< HEAD
                     
                 }
             },
@@ -105,6 +109,26 @@ var Dashboard = {
                             type: 'line',
                             data: {
                                 labels: tempLabels,
+=======
+                    Dashboard.Util.getCoordinateAddress(Dashboard.latitude, Dashboard.longitude, function(address) {
+                        $("#hourly_city").html(address);
+                        var data = Dashboard.DarkSky.date_map[Dashboard.selectedDate];
+                        $('#hourly_temperature').html(data.currently.temperature.toFixed(0) + "°");
+                        $('#hourly_wind').html(data.currently.windSpeed + " mph");
+                        $('#hourly_precipitation').html(data.currently.precipProbability * 100 + "%");
+                        $('#hourly_humidity').html(data.currently.humidity * 100 + "%");
+                        $('.current-forecast').addClass(data.currently.icon);
+
+                        var precipitationData = [];
+                        data.hourly.data.forEach(function(hour) { precipitationData.push(hour.precipProbability * 100);});
+                        var precipLabels = [];
+                        for(var i = 0; i <= 48; i++)
+                            precipLabels.push(i + "");
+                        var myLineChart = new Chart($('#hourly_temp_chart'), {
+                            type: 'line',
+                            data: {
+                                labels: precipLabels,
+>>>>>>> 7d4380019d32c0d3a6a0eabf79ad7803cd9a3efa
                                 datasets: [{
                                     label: "Precipitation",
                                     data: precipitationData,
@@ -119,14 +143,27 @@ var Dashboard = {
                                 scaleShowVerticalLines: false,
                                 title: {
                                     display: true,
+<<<<<<< HEAD
                                     text: "Temperature by Hour"
+=======
+                                    text: "Hour by Hour Precipitation"
+>>>>>>> 7d4380019d32c0d3a6a0eabf79ad7803cd9a3efa
                                 },
                                 scales: {
                                     xAxes: [{
                                         display: true,
                                         ticks: {
+<<<<<<< HEAD
                                             callback: function(dataLabel, index) {
                                                 return index % 5 === 0 ? dataLabel : '';
+=======
+                                            beginAtZero: true,
+                                            steps: 9,
+                                            stepValue: 6,
+                                            max: 48,
+                                            callback: function(dataLabel, index) {
+                                                return index % 6 === 0 ? dataLabel : '';
+>>>>>>> 7d4380019d32c0d3a6a0eabf79ad7803cd9a3efa
                                             }
                                         },
                                         gridLines : {
@@ -135,16 +172,34 @@ var Dashboard = {
                                     }],
                                     yAxes: [{
                                         display: true,
+<<<<<<< HEAD
+=======
+                                        ticks: {
+                                            beginAtZero: true,
+                                            steps: 11,
+                                            stepValue: 10,
+                                            max: 110,
+                                            callback: function(dataLabel, index) {
+                                                return index % 110 === 0 ? '' : dataLabel;
+                                            }
+                                        }
+>>>>>>> 7d4380019d32c0d3a6a0eabf79ad7803cd9a3efa
                                     }]
                                 }
                             }
                         });
+<<<<<<< HEAD
                 }
             }
+=======
+                    });
+                }
+            },
+>>>>>>> 7d4380019d32c0d3a6a0eabf79ad7803cd9a3efa
     },
     DarkSky: {
         date_map: {},
-        retrieve: function(date, callback) {
+        retrieve: function(date, callback, hourly) {
             if(Dashboard.latitude == undefined || Dashboard.longitude == undefined)
                 throw("Cannot retrieve from dark sky without location.");
             var self = this;
@@ -152,10 +207,19 @@ var Dashboard = {
                 callback(self.date_map[date]);
                 return;
             }
-            $.get("/forecast/" + Dashboard.latitude + "," + Dashboard.longitude + "," + date, function(data) {
-                self.date_map[date] = JSON.parse(data);
-                callback(self.date_map[date]);
-            });
+            if(hourly) {
+                console.log($.get("/forecast/" + Dashboard.latitude + "," + Dashboard.longitude + "?extend=hourly/", 
+                    function(data) {
+                    self.date_map[date] = JSON.parse(data);
+                    callback(self.date_map[date]);
+                }));
+            }
+            else {
+                $.get("/forecast/" + Dashboard.latitude + "," + Dashboard.longitude + "," + date, function(data) {
+                    self.date_map[date] = JSON.parse(data);
+                    callback(self.date_map[date]);
+                });
+            }
         },
     },
     Util: {
