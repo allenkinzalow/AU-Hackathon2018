@@ -77,17 +77,17 @@ html {
   background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
   overflow: hidden;
 }
-
 body {
   height: 100%;
 }
-
+h1 {
+    margin: 0 0 40px 0 !important;
+}
 #body {
     position: relative;
     width: 820px;
     height: 820px;
 }
-
 #waterContainer,
 #earthContainer {
     width: 820px;
@@ -99,32 +99,27 @@ body {
 #earthContainer {
   z-index: 200;
 }
-
 #map_selector {
   height: 500px;
 }
-
 svg {
   width: 820px;
   height: 820px;
   pointer-events: all;
 }
-
 circle {
-  fill: #85caff;
+  fill: #1b4e75;
 }
-
 path {
-  fill: #CCEABE;
+  fill: #94dc72;
   cursor: pointer;
-  stroke: #797542;
-  stroke-width: 1px;
+  stroke: #5f5b33;
+  stroke-width: 1.2px;
 }
 path:hover {
-  fill: #acd09c;
+  fill: #b6f19b;
   transition: fill 0.3s;
 }
-
 .search-wrapper {
     z-index: 5;
     width: 40%;
@@ -132,7 +127,6 @@ path:hover {
     -webkit-transition: margin .25s ease;
     transition: margin .25s ease;
 }
-
 .search-wrapper input#search {
     display: block;
     font-size: 16px;
@@ -151,7 +145,6 @@ path:hover {
     right: 10px;
     cursor: pointer;
 }
-
 .landing-container {
   display: flex;
   flex-direction: column;
