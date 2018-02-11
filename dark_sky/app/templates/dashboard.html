@@ -99,12 +99,18 @@
                     <div id="flashback" class="col s12 tab-content">
                             <div class="card">
                                 <div class="card-content">
-                                        <ul class="tabs">
-                                            <li class="tab col s3"><a class="active">Week Ago</a></li>
-                                            <li class="tab col s3"><a>Month Ago</a></li>
-                                            <li class="tab col s3"><a>Year Ago</a></li>
-                                            <li class="tab col s3"><a>Custom</a></li>
+                                        <ul class="tabs flashback-tabs">
+                                            <li class="tab col s3" data-interval="week"><a class="active">Week Ago</a></li>
+                                            <li class="tab col s3" data-interval="month"><a>Month Ago</a></li>
+                                            <li class="tab col s3" data-interval="year"><a>Year Ago</a></li>
+                                            <li class="tab col s3" data-interval="custom"><a>Custom</a></li>
                                         </ul>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-content">
+                                    <div id="flashback_city"></div>
+                                    <div id="flashback_date"></div>
                                 </div>
                             </div>
                             <div class="card">
