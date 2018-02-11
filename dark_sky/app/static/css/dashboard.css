@@ -23,6 +23,10 @@ html, body {
     max-width: 1200px;
 }
 
+.tabs .tab {
+    cursor: pointer;
+}
+
 #current_city {
     width: 100%;
     text-align: center;

@@ -8,11 +8,21 @@ var Dashboard = {
         this.longitude = params[params.length - 1];
         this.selectedDate = (Date.now() / 1000).toFixed(0);
         this.DarkSky.retrieve(this.selectedDate, function() {
+            Dashboard.UI.tabs.setup();
             Dashboard.UI.current.setup();
         });
     },
     
     UI: {
+            tabs: {
+                setup: function() {
+                    $('.tabs.dashboard-tabs').tabs({
+                        onShow: function(tab) {
+                            console.log(tab);
+                        }
+                    });
+                },
+            },
             current: {
                 setup: function() {
                     Dashboard.Util.getCoordinateAddress(Dashboard.latitude, Dashboard.longitude, function(address) {
@@ -77,6 +87,58 @@ var Dashboard = {
                             }
                         });
                     });
+                }
+            },
+            hourly: {
+                setup: function() {
+                    
+                }
+            },
+            flashback: {
+                setup: function() {
+                    var temperatureData = [];
+                        data.hourly.data.forEach(function(hour) { temperatureData.push(hour.temperature);});
+                        var tempLabels = [];
+                        for(var i = 0; i <= 23; i++)
+                        tempLabels.push(i + "");
+                        var myLineChart = new Chart($('#flashback_temperature_graph'), {
+                            type: 'line',
+                            data: {
+                                labels: tempLabels,
+                                datasets: [{
+                                    label: "Precipitation",
+                                    data: precipitationData,
+                                    backgroundColor: "rgb(255, 99, 132)",
+                                    borderColor: "rgb(255, 99, 132)",
+                                    fill: false,
+                                }],
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scaleShowVerticalLines: false,
+                                title: {
+                                    display: true,
+                                    text: "Temperature by Hour"
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        display: true,
+                                        ticks: {
+                                            callback: function(dataLabel, index) {
+                                                return index % 5 === 0 ? dataLabel : '';
+                                            }
+                                        },
+                                        gridLines : {
+                                            display : false
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        display: true,
+                                    }]
+                                }
+                            }
+                        });
                 }
             }
     },
