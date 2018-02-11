@@ -100,7 +100,11 @@ var Dashboard = {
         getCoordinateAddress: function(lat, lng, callback) {
             $.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM", function(data) {
                 var address = data.results[0].address_components.reduce(function(str, component) {
-                    if(!component.types.includes("administrative_area_level_2") && (component.types.includes('locality') || component.types.includes('political') || component.types.includes('postal_code')))
+                    if(!component.types.includes("administrative_area_level_2") 
+                        && (component.types.includes('country') 
+                        || component.types.includes('administrative_area_level_1') 
+                        || component.types.includes('locality') 
+                        || component.types.includes('postal_code')))
                         return str + component.long_name + (component.types.includes("locality") ? ", " : " ");
                     else
                         return str; 
