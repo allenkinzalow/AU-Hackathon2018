@@ -59,6 +59,10 @@ body {
     left: 0px;
 }
 
+#map_selector {
+  height: 500px;
+}
+
 svg {
   width: 820px;
   height: 820px;
@@ -81,7 +85,7 @@ path:hover {
 }
 
 .search-wrapper {
-    z-index: 5000;
+    z-index: 5;
     width: 40%;
     margin: 0 12px;
     -webkit-transition: margin .25s ease;
@@ -168,6 +172,8 @@ var scale = {
 var path = d3.geo.path()
     .projection(projection);
 
+var map_selector = undefined;
+
 var svg = d3.select("#body").append("svg:svg")
     .attr("id", "earthContainer")
     .attr("width", 820)
@@ -182,6 +188,24 @@ d3.json("static/json/world-countries.json", function(collection) {
 
   feature.append("svg:title")
       .text(function(d) { return d.properties.name; });
+
+  $('#earthContainer path').click(function() {
+    var country = $(this).find('title').html();
+    console.log(country);
+    $.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + country + "&key=AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM", function(data) {
+      if(data.results.length > 0)
+        var location = data.results[0].geometry.location;
+        if(map_selector) {
+          map_selector.setCenter({lat: location.lat, lng: location.lng});
+        } else {
+          map_selector = new google.maps.Map(document.getElementById('map_selector'), {
+            zoom: 5,
+            center: {lat: location.lat, lng: location.lng}
+          });
+        }
+        $('#map_selector_modal').modal('open');
+    });
+  })
 });
 
 d3.select(window)
@@ -209,7 +233,7 @@ var input = document.getElementById('search');
 var autocomplete = new google.maps.places.Autocomplete(input, {types: ['geocode']});
 autocomplete.addListener('place_changed', function() {
   var address = $(input).val();
-  $.get("https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM", function(data) {
+  $.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM", function(data) {
     if(data.results.length > 0)
       console.log(data.results[0].geometry.location); 
   });
@@ -248,7 +272,16 @@ function refresh(duration) {
 function clip(d) {
   return path(circle.clip(d));
 }
-
+  $(document).ready(function(){
+    $('.modal').modal();
+  });
     </script>
+
+  <div id="map_selector_modal" class="modal">
+    <div class="modal-content">
+      <h4>Choose Location</h4>
+      <div id="map_selector"></div>
+    </div>
+  </div>
   </body>
 </html>
