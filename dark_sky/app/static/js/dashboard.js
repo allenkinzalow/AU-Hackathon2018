@@ -1,15 +1,31 @@
 var Dashboard = {
     latitude: undefined,
     longitude: undefined,
+    selectedDate: undefined,
     setup: function() {
-        var params = location.href.substring(location.href.lastIndexOf('/')).split("/");
-        var longitude = params[0];
-        var latitude = params[1];
-        console.log(longitude + " " + latitude);
+        var params = location.href.split("/");
+        this.latitude = params[params.length - 2];
+        this.longitude = params[params.length - 1];
+        this.selectedDate = (Date.now() / 1000).toFixed(0);
+        this.DarkSky.retrieve(this.selectedDate, function() {
+            Dashboard.UI.current.setup();
+        });
     },
     
     UI: {
-
+            current: {
+                setup: function() {
+                    Dashboard.Util.getCoordinateAddress(Dashboard.latitude, Dashboard.longitude, function(address) {
+                        $("#current_city").html(address);
+                        var data = Dashboard.DarkSky.date_map[Dashboard.selectedDate];
+                        $('#current_temperature').html(data.currently.temperature.toFixed(0) + "°");
+                        $('#current_wind').html(data.currently.windSpeed + " mph");
+                        $('#current_precipitation').html(data.currently.precipProbability * 100 + "%");
+                        $('#current_humidity').html(data.currently.humidity * 100 + "%");
+                        $('.current-forecast').addClass(data.currently.icon);
+                    });
+                }
+            }
     },
     DarkSky: {
         date_map: {},
@@ -17,15 +33,29 @@ var Dashboard = {
             if(Dashboard.latitude == undefined || Dashboard.longitude == undefined)
                 throw("Cannot retrieve from dark sky without location.");
             var self = this;
-            if(self.date_map[date])
+            if(self.date_map[date]) {
+                callback(self.date_map[date]);
                 return;
+            }
             $.get("/forecast/" + Dashboard.latitude + "," + Dashboard.longitude + "," + date, function(data) {
-                self.date_map[date] = data;
-                callback();
+                self.date_map[date] = JSON.parse(data);
+                callback(self.date_map[date]);
             });
         },
     },
     Util: {
+        getCoordinateAddress: function(lat, lng, callback) {
+            $.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM", function(data) {
+                var address = data.results[0].address_components.reduce(function(str, component) {
+                    if(!component.types.includes("administrative_area_level_2") && (component.types.includes('locality') || component.types.includes('political') || component.types.includes('postal_code')))
+                        return str + component.long_name + (component.types.includes("locality") ? ", " : " ");
+                    else
+                        return str; 
+                }, "");
+                callback(address);
+            });
+
+        },
     },
 };
 

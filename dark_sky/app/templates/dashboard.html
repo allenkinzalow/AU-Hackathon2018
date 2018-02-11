@@ -7,8 +7,10 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript"
         src="{{ url_for('static', filename='js/materialize.js') }}"></script>
-        <script type="text/javascript"
+    <script type="text/javascript"
         src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script type="text/javascript"
+        src="{{ url_for('static', filename='js/chart.bundle.min.js') }}"></script>
 
     <!-- CSS -->
     <link type="text/css" rel="stylesheet" 
@@ -23,6 +25,57 @@
         rel="stylesheet">
   </head>
   <body>
-    
+        <div class="dashboard-container">
+                <div class="row dashboard-row">
+                    <div class="col s12 no-padding">
+                        <ul class="tabs dashboard-tabs">
+                        <li class="tab col s3"><a class="active" href="#current">Current</a></li>
+                        <li class="tab col s3"><a href="#hourly">Hourly</a></li>
+                        <li class="tab col s3"><a href="#weekly">Weekly</a></li>
+                        <li class="tab col s3"><a href="#flashback">Flashback</a></li>
+                        </ul>
+                    </div>
+                    <div id="current" class="col s12 tab-content">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div id="current_city"></div>
+                                    <div class="forecast-table">
+                                        <div class="forecast-column">
+                                            <div class="forecast-title">temp</div>
+                                            <div class="forecast-value" id="current_temperature"></div>
+                                        </div>
+                                        <div class="forecast-column">
+                                            <div class="forecast-title">wind</div>
+                                            <div class="forecast-value" id="current_wind"></div>
+                                        </div>
+                                        <div class="current-forecast"></div>
+                                        <div class="forecast-column">
+                                            <div class="forecast-title">precip</div>
+                                            <div class="forecast-value" id="current_precipitation"></div>
+                                        </div>
+                                        <div class="forecast-column">
+                                            <div class="forecast-title">humidity</div>
+                                            <div class="forecast-value" id="current_humidity"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-content">
+                                    <div id="current_temperature_graph"></div>
+                                </div>
+                            </div>
+                    </div>
+                    <div id="hourly" class="col s12 tab-content">
+
+                    </div>
+                    <div id="weekly" class="col s12 tab-content">
+
+                    </div>
+                    <div id="flashback" class="col s12 tab-content">
+
+                    </div>
+                </div>
+        </div>
   </body>
 </html>
