@@ -141,9 +141,7 @@ d3.json("static/json/world-countries.json", function(collection) {
             center: {lat: location.lat, lng: location.lng}
           });
           map_selector.addListener('click', function(e) {
-            console.log(e);
-            console.log(e.latLng.lat());
-            console.log(e.latLng.lng());
+            location.href = "/dashboard/" + e.latLng.lat() + "/" + e.latLng.lng();
           });
         }
         $('#map_selector_modal').modal('open');
@@ -178,7 +176,8 @@ autocomplete.addListener('place_changed', function() {
   var address = $(input).val();
   $.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM", function(data) {
     if(data.results.length > 0)
-      console.log(data.results[0].geometry.location); 
+      var loc = data.results[0].geometry.location;
+      location.href = "/dashboard/" + loc.lat + "/" + loc.lng;
   });
 });
 
