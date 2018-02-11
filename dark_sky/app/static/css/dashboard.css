@@ -23,7 +23,8 @@ html, body {
     max-width: 1200px;
 }
 
-#current_city {
+#current_city,
+#hourly_city {
     width: 100%;
     text-align: center;
     font-size: 42px;
@@ -31,6 +32,10 @@ html, body {
     text-transform: uppercase;
 }
 
+#current_temperature_graph,
+#hourly_temp_chart {
+    min-height: 400px !important;
+}
 .forecast-table {
     display: flex;
     flex-direction: row;

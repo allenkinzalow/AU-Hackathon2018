@@ -66,7 +66,35 @@
                             </div>
                     </div>
                     <div id="hourly" class="col s12 tab-content">
-
+                        <div class="card">
+                            <div class="card-content">
+                                <div id="hourly_city"></div>
+                                <div class="forecast-table">
+                                    <div class="forecast-column">
+                                        <div class="forecast-title">temp</div>
+                                        <div class="forecast-value" id="hourly_temperature"></div>
+                                    </div>
+                                    <div class="forecast-column">
+                                        <div class="forecast-title">wind</div>
+                                        <div class="forecast-value" id="hourly_wind"></div>
+                                    </div>
+                                    <div class="current-forecast"></div>
+                                    <div class="forecast-column">
+                                        <div class="forecast-title">precip</div>
+                                        <div class="forecast-value" id="hourly_precipitation"></div>
+                                    </div>
+                                    <div class="forecast-column">
+                                        <div class="forecast-title">humidity</div>
+                                        <div class="forecast-value" id="hourly_humidity"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-content">
+                                    <canvas id="hourly_temp_chart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
                     </div>
                     <div id="flashback" class="col s12 tab-content">
 
