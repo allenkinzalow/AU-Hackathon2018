@@ -200,7 +200,13 @@ d3.json("static/json/world-countries.json", function(collection) {
         } else {
           map_selector = new google.maps.Map(document.getElementById('map_selector'), {
             zoom: 5,
+            fullscreenControl: false,
             center: {lat: location.lat, lng: location.lng}
+          });
+          map_selector.addListener('click', function(e) {
+            console.log(e);
+            console.log(e.latLng.lat());
+            console.log(e.latLng.lng());
           });
         }
         $('#map_selector_modal').modal('open');
