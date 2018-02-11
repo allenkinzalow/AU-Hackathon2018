@@ -15,6 +15,7 @@
         src="{{ url_for('static', filename='js/svg.js') }}"></script>
     <script type="text/javascript"
         src="{{ url_for('static', filename='js/materialize.js') }}"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM&libraries=places"></script>
 
     <!-- CSS -->
     <link type="text/css" rel="stylesheet" 
@@ -112,6 +113,7 @@ path:hover {
   width: 100%;
   height: 100%;
   align-items: center;
+  margin-top: 25px;
 }
 
     </style>
@@ -126,16 +128,18 @@ path:hover {
         </div>
         <div id="body">
           <div id="waterContainer"></div>
-          <div id="footer">
+        </div>
+        <div id="footer">
             <div id="hint">
               <h1>DRAG TO ROTATE</h1>
             </div>
           </div>
-        </div>
     </div>
     <script type="text/javascript">
 
 var feature;
+
+//AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM << maps api key
 
 var projection = d3.geo.azimuthal()
     .scale(380)
@@ -190,13 +194,25 @@ d3.select("select").on("change", function() {
 });
 
 var bodyContainer = $('#body');
+var footer = $('#footer');
 var transform = 1;
 bodyContainer.mousewheel(function(event) {
     if(event.deltaY != 0) {
       transform += (transform * 0.1) * event.deltaY;
       transform = transform < 0.8 ? 0.8 : transform > 2 ? 2 : transform;
       bodyContainer.css({transform: "scale(" + transform + ")"});
+      footer.css("opacity", transform > 1.1 ? 0 : 1);
     }
+});
+
+var input = document.getElementById('search');
+var autocomplete = new google.maps.places.Autocomplete(input, {types: ['geocode']});
+autocomplete.addListener('place_changed', function() {
+  var address = $(input).val();
+  $.get("https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyBuDdLpxnsEli8hXiaDTsaceYQ5DcaTaQM", function(data) {
+    if(data.results.length > 0)
+      console.log(data.results[0].geometry.location); 
+  });
 });
 
 var m0,

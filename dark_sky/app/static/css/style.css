@@ -5,11 +5,6 @@ body {
   font-family: "Helvetica Neue", Helvetica;
 }
 
-#chart, #header, #footer {
-  position: absolute;
-  top: 0;
-}
-
 #header, #footer {
   z-index: 1;
   display: block;
@@ -17,20 +12,8 @@ body {
   font-weight: 300;
 }
 
-#header.inverted, #footer.inverted {
-  color: #fff;
-}
-
-#header {
-  top: 80px;
-  left: 140px;
-  width: 1000px;
-}
-
 #footer {
-  top: 680px;
-  right: 140px;
-  text-align: right;
+  transition: 0.3s;
 }
 
 rect {
