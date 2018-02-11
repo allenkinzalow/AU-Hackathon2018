@@ -23,6 +23,59 @@ var Dashboard = {
                         $('#current_precipitation').html(data.currently.precipProbability * 100 + "%");
                         $('#current_humidity').html(data.currently.humidity * 100 + "%");
                         $('.current-forecast').addClass(data.currently.icon);
+
+                        var precipitationData = [];
+                        data.minutely.data.forEach(function(minute) { precipitationData.push(minute.precipProbability * 100);});
+                        var precipLabels = [];
+                        for(var i = 0; i <= 59; i++)
+                            precipLabels.push(i + "");
+                        var myLineChart = new Chart($('#current_temperature_graph'), {
+                            type: 'line',
+                            data: {
+                                labels: precipLabels,
+                                datasets: [{
+                                    label: "Precipitation",
+                                    data: precipitationData,
+                                    backgroundColor: "rgb(255, 99, 132)",
+                                    borderColor: "rgb(255, 99, 132)",
+                                    fill: false,
+                                }],
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scaleShowVerticalLines: false,
+                                title: {
+                                    display: true,
+                                    text: "Precipitation by Minute"
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        display: true,
+                                        ticks: {
+                                            callback: function(dataLabel, index) {
+                                                return index % 5 === 0 ? dataLabel : '';
+                                            }
+                                        },
+                                        gridLines : {
+                                            display : false
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        display: true,
+                                        ticks: {
+                                            beginAtZero: true,
+                                            steps: 11,
+                                            stepValue: 10,
+                                            max: 110,
+                                            callback: function(dataLabel, index) {
+                                                return index % 110 === 0 ? '' : dataLabel;
+                                            }
+                                        }
+                                    }]
+                                }
+                            }
+                        });
                     });
                 }
             }
