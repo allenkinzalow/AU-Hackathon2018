@@ -71,3 +71,101 @@ a:hover {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+html {
+  height: 100%;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  overflow: hidden;
+}
+
+body {
+  height: 100%;
+}
+
+#body {
+    position: relative;
+    width: 820px;
+    height: 820px;
+}
+
+#waterContainer,
+#earthContainer {
+    width: 820px;
+    height: 820px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+#earthContainer {
+  z-index: 200;
+}
+
+#map_selector {
+  height: 500px;
+}
+
+svg {
+  width: 820px;
+  height: 820px;
+  pointer-events: all;
+}
+
+circle {
+  fill: #85caff;
+}
+
+path {
+  fill: #CCEABE;
+  cursor: pointer;
+  stroke: #797542;
+  stroke-width: 1px;
+}
+path:hover {
+  fill: #acd09c;
+  transition: fill 0.3s;
+}
+
+.search-wrapper {
+    z-index: 5;
+    width: 40%;
+    margin: 0 12px;
+    -webkit-transition: margin .25s ease;
+    transition: margin .25s ease;
+}
+
+.search-wrapper input#search {
+    display: block;
+    font-size: 16px;
+    font-weight: 300;
+    width: 100%;
+    height: 45px;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 45px 0 15px;
+    border: 0;
+}
+.search-wrapper i.material-icons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  margin-top: 25px;
+}
+#earthShadowSVG {
+    z-index: 200;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+#earthShadow {
+  fill: url(#earthGrad) !important;
+}

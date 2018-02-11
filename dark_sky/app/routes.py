@@ -4,11 +4,16 @@ from app import app
 
 import requests
 
+#Landing page
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html')
 
+#Dashboard
+@app.route('/dashboard/<string:lat>/<string:lng>')
+def dashboard(lat, lng):
+    return render_template('dashboard.html')
 
 #Proxy Server
 @app.route('/forecast/<string:lat>/<string:lng>')
